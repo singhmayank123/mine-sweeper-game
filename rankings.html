@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rankings</title>
+  <link rel="stylesheet" href="css/styles.css">
+  <script src="js/common.js"></script>
+</head>
+<body>
+  <header>
+    <nav>
+      <ul>
+        <li><a href="index.html">Game</a></li>
+        <li><a href="login.html">Login</a></li>
+        <li><a href="register.html">Register</a></li>
+        <li><a href="rankings.html">Rankings</a></li>
+        <li><a href="#" id="logout-btn" style="display: none;">Logout</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <div class="container">
+    <h1>Rankings</h1>
+    <table id="rankings-table">
+      <thead>
+        <tr>
+          <th>Rank</th>
+          <th>Username</th>
+          <th>Score</th>
+        </tr>
+      </thead>
+      <tbody id="rankings-list"></tbody>
+    </table>
+  </div>
+  <script src="js/rankings.js"></script>
+</body>
+</html>
