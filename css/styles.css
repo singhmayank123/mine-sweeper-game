@@ -6,15 +6,40 @@
   
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f0f2f5;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    height: 100vh;
+    min-height: 100vh;
     padding: 10px;
+    color: #e7e3e3;
   }
   
+  /* Specific background images for each page */
+  body.bg-index {
+    background-image: url('../images/b1.png');
+  }
+
+  body.bg-login {
+    background-image: url('../images/b2.png');
+  }
+
+  body.bg-register {
+    background-image: url('../images/b3.png');
+  }
+
+  body.bg-rankings {
+    background-image: url('../images/b1.png');
+  }
+
+  body.bg-game {
+    background-image: url('../images/b4.png');
+  }
+
   header {
     position: fixed;
     top: 0;
@@ -67,6 +92,7 @@
     display: flex;
     justify-content: space-between;
     margin-bottom: 10px;
+    color: white;
   }
   
   #game-board {
@@ -282,3 +308,18 @@ footer {
   color: #f9f7f7;
 }
 
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Adjust opacity as needed */
+  z-index: -1;
+}
+
+/* Set color of headings and paragraphs to white */
+h1, h2, h3, h4, h5, h6, p {
+  color: white;
+}

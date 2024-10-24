@@ -12,10 +12,10 @@ loginForm.addEventListener("submit", function(event) {
   );
 
   if (user) {
-    alert("Login successful!");
+    showFloatingWindow("Login successful!", true);
     localStorage.setItem("currentUser", user.username);
     window.location.href = "index.html"; // Redirect to the game
   } else {
-    alert("Invalid username/email or password.");
+    showFloatingWindow("Invalid username/email or password.", false);
   }
 });

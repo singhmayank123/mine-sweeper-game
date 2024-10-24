@@ -132,7 +132,8 @@ export default class Game {
             cell.innerHTML = "💣";
             this.gameOver = true;
             clearInterval(this.timer);
-            alert(`You hit a bomb! Your score is: ${this.score} points.`);
+            this.showFloatingWindow(false);
+            this.endGame(false);
             this.revealAllMines();
         } else {
             const minesAround = this.countMinesAround(cell);
@@ -215,30 +216,56 @@ export default class Game {
     endGame(isWin) {
         clearInterval(this.timer);
         const currentUser = localStorage.getItem('currentUser');
-        if (currentUser) {
+        
+        if (currentUser) { 
+            // Get existing rankings or initialize empty array
             let rankings = JSON.parse(localStorage.getItem('rankings')) || [];
-            const userIndex = rankings.findIndex(user => user.username === currentUser);
+            
+            // Calculate score based on time and remaining mines
+            const timeScore = parseInt(this.timerElement.innerText);
+            // Calculate digit factor: fewer digits (faster time) = higher multiplier
+            const digitFactor = Math.max(1, 2 - Math.floor(Math.log10(timeScore + 1)) * 0.5);
+            // Calculate score based on time and remaining mines
+            this.score = this.score * digitFactor;
+            
+            // Find if user already exists in rankings
+            const userIndex = rankings.findIndex(rank => rank.username === currentUser);
+            
             if (userIndex !== -1) {
-                // Update the score if the new score is higher
-                rankings[userIndex].score = Math.max(rankings[userIndex].score, this.score);
+                // Update score if new score is higher
+                if (this.score > rankings[userIndex].score) {
+                    rankings[userIndex].score = this.score;
+                }
             } else {
                 // Add new user score
-                rankings.push({ username: currentUser, score: this.score });
+                rankings.push({
+                    username: currentUser,
+                    score: this.score
+                });
             }
+            
+            // Sort rankings by score in descending order
+            rankings.sort((a, b) => b.score - a.score);
+            
+            // Store updated rankings
             localStorage.setItem('rankings', JSON.stringify(rankings));
         }
-    
-        if (isWin) {
-            alert("Congratulations! You won the game.");
-        } else {
-            alert("Game over! You hit a mine.");
-        }
+
+        // Show win/lose message
+        this.showFloatingWindow(isWin);
     }
     
     updateScoreDisplay() {
-        const scoreElement = document.getElementById("score");
-        if (scoreElement) {
-            scoreElement.innerText = `Score: ${this.score}`;
+        const currentUser = localStorage.getItem('currentUser');
+        if (currentUser) {
+            const rankings = JSON.parse(localStorage.getItem('rankings')) || [];
+            const userRank = rankings.find(rank => rank.username === currentUser);
+            if (userRank) {
+                const scoreElement = document.getElementById("score");
+                if (scoreElement) {
+                    scoreElement.innerText = `High Score: ${userRank.score}`;
+                }
+            }
         }
     }
     
@@ -276,7 +303,7 @@ export default class Game {
 
         setTimeout(() => {
             animationContainer.remove();
-            alert("Congratulations! You won the game!");
+            showFloatingWindow("Congratulations! You won the game!", true);
         }, 7000);
     }
 
@@ -445,5 +472,10 @@ export default class Game {
         };
 
         animate(0);
+    }
+
+    showFloatingWindow(isWin) {
+        const message = isWin ? "Congratulations! You won the game." : "Game over! You hit a mine.";
+        showFloatingWindow(message, isWin);
     }
 }

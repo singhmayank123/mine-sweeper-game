@@ -10,6 +10,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const logoutBtn = document.getElementById("logout-btn");
   const loginLink = document.querySelector('a[href="login.html"]');
 
+  // Debugging: Log elements to the console
+  console.log('Welcome Message:', welcomeMessage);
+  console.log('Player Name:', playerName);
+  console.log('Game Info:', gameInfo);
+  console.log('Game Board:', gameBoard);
+  console.log('Restart Button:', restartBtn);
+  console.log('Logout Button:', logoutBtn);
+
   if (currentUser) {
     playerName.textContent = currentUser;
     welcomeMessage.style.display = "block";
@@ -32,16 +40,18 @@ document.addEventListener("DOMContentLoaded", () => {
     setTimeout(() => {
       window.location.href = "login.html";
     }, 3000); // Redirect after 3 seconds
-    logoutBtn.style.display = "none";
-    if (loginLink) {
-      loginLink.style.display = "inline";
-    }
   }
 
-  logoutBtn.addEventListener("click", () => {
-    localStorage.removeItem("currentUser");
-    window.location.href = "login.html";
-  });
+  if(loginLink){
+    loginLink.style.display = "inline";
+  }
+
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("currentUser");
+      window.location.href = "login.html";
+    });
+  }
 
   const grid = document.getElementById("game-board");
   const timerElement = document.getElementById("time");
